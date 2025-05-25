@@ -16,7 +16,7 @@ export default function Reservation() {
     const handleStartDateSelect = (date: Date | undefined) => {
         setStartDate(date);
         if (endDate && date && date > endDate) {
-            setEndDate(undefined); // Reset end date if start date is after it
+            setEndDate(undefined);
         }
     }
 

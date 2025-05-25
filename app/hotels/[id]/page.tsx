@@ -1,14 +1,15 @@
-import VillaInfos from '@/app/components/VillaInfos';
 import { supabase } from '@/lib/supabase';
+import VillaInfos from '@/app/components/VillaInfos';
 import Reservation from '@/app/components/Reservation';
 import GalerieHotel from '@/app/components/GalerieHotel';
 
-interface Params {
-  params: { id: string };
+interface PageProps {
+  params: Promise<{ id: string }>;
 }
 
-export default async function HotelDetail({ params }: Params) {
-  const { id } = params;
+
+export default async function HotelDetail({ params }: PageProps) {
+  const { id } = await params;
 
   const { data: hotel, error } = await supabase
     .from('hotels')
@@ -27,7 +28,7 @@ export default async function HotelDetail({ params }: Params) {
   return (
     <div className="space-y-12">
       <GalerieHotel images={hotel.images ?? []} />
-      <VillaInfos 
+      <VillaInfos
         surface={hotel.surface}
         bedrooms={hotel.bedrooms}
         bathrooms={hotel.bathrooms}
