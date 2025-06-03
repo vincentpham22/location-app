@@ -1,7 +1,6 @@
 import {collection, addDoc} from "firebase/firestore";
 import {NextResponse} from "next/server";
 import {db} from "../../../db/firebaseConfig";
-import bcrypt from "bcryptjs";
 
 export async function POST(request: Request) { //creation et ajout d'un nouvel utilisateur dans firebase
     try{
