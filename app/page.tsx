@@ -12,8 +12,8 @@ export default function Home() {
       surface={120}
       bedrooms={6}
       bathrooms={3}
-      hasPool={true}
-      hasKitchen={true}
+      has_pool={true}
+      has_kitchen={true}
       />
       <Reservation />
     </>

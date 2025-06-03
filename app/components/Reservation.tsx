@@ -4,10 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar'
 import { CalendarFold} from 'lucide-react';
 
-const PRICE_PER_NIGHT = 130;
+type ReservationProps = {
+  pricePerNight: number;
+    hotelId: string;
+};
 
 
-export default function Reservation() {
+export default function Reservation({pricePerNight, hotelId}: ReservationProps) {
 
     const [startDate, setStartDate] = useState<Date | undefined>();
     const [endDate, setEndDate] = useState<Date | undefined>();
@@ -35,13 +38,31 @@ export default function Reservation() {
     }
 
     const totalNights = calculateNights();
-    const totalPrice = totalNights * PRICE_PER_NIGHT;
-    const handleReservation = () => {
-        setIsSubmitted(true);
-    }
+    const totalPrice = totalNights * pricePerNight;
+
+const handleReservation = () => {
+  if (!startDate || !endDate) return;
+
+  const reservation = {
+    hotelId,
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
+    totalNights,
+    totalPrice,
+    createdAt: new Date().toISOString(),
+  };
+
+  const panier = JSON.parse(localStorage.getItem("panier") || "[]");
+  panier.push(reservation);
+
+  // Sauvegarde le panier mis à jour
+  localStorage.setItem("panier", JSON.stringify(panier));
+
+  setIsSubmitted(true);
+};
 
     return (
-        <div className='max-w-[1200px] mx-auto p-6 bg-white rounded-xl space-y-8'>
+        <div className='max-w-[1200px] mx-auto my-6 p-6 bg-white rounded-xl space-y-8 flex flex-col items-center'>
             <h2 className='text-3xl font-bold text-gray-800'>Réservez votre séjour</h2>
             <div className='space-y-4'>
                 <div className='flex items-center space-x-3'>
@@ -76,7 +97,7 @@ export default function Reservation() {
                 </div>
                 
             )}
-            <Button onClick={handleReservation} disabled={!startDate || !endDate || isSubmitted} className='w-full bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg'> 
+            <Button onClick={handleReservation} disabled={!startDate || !endDate || isSubmitted} className='bg-yellow-500 hover:bg-yellow-600 text-white py-3 rounded-lg'> 
                 {isSubmitted ? (<div className='flex items-center justify-center space-x-2'>
                     <CalendarFold className='w-5 h-5 text-green-400'/>
                     <span>Réservation confirmée</span>
