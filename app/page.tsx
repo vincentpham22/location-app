@@ -15,7 +15,7 @@ export default function Home() {
       has_pool={true}
       has_kitchen={true}
       />
-      <Reservation />
+      <Reservation pricePerNight={150} hotelId={String(0)}/>
     </>
   )
 }
